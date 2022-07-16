@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 })
 
 app.get('/api/courses', (req, res) => {
-    res.send([1, 2, 3])
+    res.send(courses)
 })
 
 
@@ -69,6 +69,19 @@ const schema={
 
   // update
   course.course=req.body.name
+  res.send(course)
+})
+
+app.delete('/api/courses/:id',(req,res)=>{
+    //check valid id
+  const course=courses.find(c=>c.id===parseInt(req.params.id))
+  if (!course){
+    res.status(404).send("Id NOT found")
+    return
+  }
+// deleting 
+  const index=courses.indexOf(course)
+  courses.splice(index,1)
   res.send(course)
 })
 
