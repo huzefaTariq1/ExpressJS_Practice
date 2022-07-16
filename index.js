@@ -52,5 +52,25 @@ app.post('/api/courses',(req,res)=>{
     res.send(course)
 })
 
+
+app.put('/api/courses/:id',(req,res)=>{
+  // checking valid id
+  const course=courses.find(c=>c.id===parseInt(req.params.id))
+  if(!course)res.status(404).send("id NOT found")
+
+ // validate input
+const schema={
+    name:Joi.string().min(3).required()
+}
+ const result=Joi.validate(req.body,schema)
+ if (result.error){
+    res.status(400).send(result.error.details[0].message)
+ }
+
+  // update
+  course.course=req.body.name
+  res.send(course)
+})
+
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`server running on ${port} port`))
